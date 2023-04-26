@@ -42,6 +42,8 @@ class _LocationPickerState extends State<LocationPicker> {
               builder: (context) =>MapPage(
                 startLatitude: widget.initialLatitude,
                 startLongitude: widget.initialLongitude,
+                endLatitude: latitude,
+                endLongitude : longitude,
                 // endLatitude: latitude,
                 // endLongitude: longitude,
               ),

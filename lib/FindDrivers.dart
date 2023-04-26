@@ -6,14 +6,20 @@ import 'package:latlong2/latlong.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'JourneyReview.dart';
+
 class MapPage extends StatefulWidget {
   final double startLatitude;
   final double startLongitude;
+  final double endLatitude;
+  final double endLongitude;
 
   const MapPage({
     Key? key,
     required this.startLatitude,
     required this.startLongitude,
+     required this.endLatitude,
+    required this.endLongitude,
   }) : super(key: key);
 
   @override
@@ -22,18 +28,25 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
   List<LatLng> _driverPositions = [];
+  bool _reached =false ;
   Timer? _timer;
+  
 
   @override
   void initState() {
     super.initState();
-
     // Load initial driver positions
-    _loadDriverPositions();
-
+    // _loadDriverPositions();
+    _driverPositions=[LatLng(widget.endLatitude,widget.endLongitude)];
+  // _reached = true;
     // Setup timer to reload driver positions every 5 minutes
-    Timer.periodic(const Duration(minutes: 5), (timer) {
-      _loadDriverPositions();
+    Timer.periodic(const Duration(seconds: 5), (timer) {
+      // _loadDriverPositions();
+      setState(() {
+        
+         _reached=true;
+      });
+     
     });
   }
 
@@ -68,11 +81,14 @@ class _MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    if(_reached){
+      return ReviewForm(driverId: '00000', userId: 'hhhhhh');
+    }
+    return   Scaffold(
       appBar: AppBar(
         title: const Text('Map'),
       ),
-      body: FlutterMap(
+      body:  FlutterMap(
         options: MapOptions(
           center: LatLng(widget.startLatitude, widget.startLongitude),
           zoom: 13.0,
