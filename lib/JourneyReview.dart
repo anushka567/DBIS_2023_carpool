@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'UserDashboard.dart';
 class ReviewForm extends StatefulWidget {
   final String driverId;
   final String userId;
@@ -29,6 +29,10 @@ class _ReviewFormState extends State<ReviewForm> {
 
   @override
   Widget build(BuildContext context) {
+
+    if(redirect){
+      return DashboardPage();
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text('Submit Review'),
