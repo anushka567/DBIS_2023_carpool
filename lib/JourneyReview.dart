@@ -31,7 +31,7 @@ class _ReviewFormState extends State<ReviewForm> {
   Widget build(BuildContext context) {
 
     if(redirect){
-      return DashboardPage();
+      return UserDashboardPage();
     }
     return Scaffold(
       appBar: AppBar(

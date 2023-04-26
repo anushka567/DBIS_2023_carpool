@@ -1,12 +1,13 @@
 import 'dart:async';
 
+import 'package:cabshare/user_pay_driver.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
-import 'JourneyReview.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'user_pay_driver.dart';
 
 class MapPage extends StatefulWidget {
   final double startLatitude;
@@ -31,6 +32,30 @@ class _MapPageState extends State<MapPage> {
   bool _reached =false ;
   Timer? _timer;
   
+
+
+
+Future<void> showNotification() async {
+  const androidDetails = AndroidNotificationDetails(
+    'channelId',
+    'channelName',
+    channelDescription: 'channelDescription',
+    importance: Importance.high,
+    priority: Priority.high,
+    ticker: 'ticker',
+  );
+  
+  const details = NotificationDetails(
+    android: androidDetails,
+   
+  );
+  await FlutterLocalNotificationsPlugin().show(
+    0,
+    'Ride Complete',
+    'You have reached your destination.',
+    details,
+  );
+}
 
   @override
   void initState() {
@@ -82,7 +107,13 @@ class _MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     if(_reached){
-      return ReviewForm(driverId: '00000', userId: 'hhhhhh');
+    
+  showNotification();
+ // return ReviewForm(driverId: '00000', userId: 'hhhhhh');
+ return PaymentPage(amount: 40);
+
+
+    
     }
     return   Scaffold(
       appBar: AppBar(
