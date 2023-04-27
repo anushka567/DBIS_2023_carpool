@@ -4,6 +4,21 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'drive_from_to.dart';
 
+class Passenger{
+  late String id;
+  late LatLng passengerFrom;
+  late LatLng passengerTo;
+  bool driverReached=false;
+  bool reachedDestination=false;
+
+  Passenger(String id,LatLng from,LatLng to){
+    this.id=id;
+    this.passengerFrom=from;
+    this.passengerTo=to;
+    
+  }
+}
+
 class PassengerPicker extends StatefulWidget {
   final double initialLatitude;
   final double initialLongitude;
@@ -35,6 +50,9 @@ class _PassengerPickerState extends State<PassengerPicker> {
 
 
   void startJourney(BuildContext context){
+
+    List<Passenger> passengerList;
+    for (int i=0;i< _passengerDestinations)
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) =>  DriveFromTo(driverLat: widget.initialLatitude,driverLong: widget.initialLongitude,
@@ -78,6 +96,7 @@ class _PassengerPickerState extends State<PassengerPicker> {
                 width: 80.0,
                 height: 80.0,
                 point: LatLng(widget.initialLatitude, widget.initialLongitude),
+                
                 builder: (ctx) => const Icon(
                   Icons.directions_car,
                   color: Color.fromARGB(255, 233, 30, 30),

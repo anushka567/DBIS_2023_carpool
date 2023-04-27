@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:open_route_service/open_route_service.dart';
 import 'dart:math' ;
 import 'dart:async';
 
@@ -57,7 +60,11 @@ class DriveFromTo extends StatefulWidget {
 
 
 class _DriveFromToState extends State<DriveFromTo> {
+final openRouteService = OpenRouteService(apiKey: '');
+List<LatLng> _polylinePoints = [];
+
 late List<Passenger> passengerList;
+late List<Passenger> pickUpList;
 late List<PassengerMarker> markerList;
 late FlutterMap flutterMap;
 Timer? _timer;
@@ -106,6 +113,8 @@ void initState(){
           )
         ]);
 
+
+  _getRoute();
   Timer.periodic(const Duration(milliseconds: 500), (timer) { 
     setState(() {
       widget.driverLat-=0.001;
@@ -128,6 +137,31 @@ void initState(){
   
 }
 
+GeoPoint getNextLocation(){
+  List<LatLng> orderOfPickUp=sortLocations(widget.passengerLocations);
+  // List<LatLng> orderOfDropOff=sortLocations(widget.passengerDestinations);
+  for 
+  
+}
+
+
+Future<void> _getRoute() async {
+ 
+      GeoPoint nextStop=getNextLocation();
+    final directionsResponse = await openRouteService.directions(
+      [
+        GeoPoint(latitude: widget.driverLat, longitude: widget.driverLong),
+        nextStop,
+      ],
+      profile: 'driving-car',
+    );
+
+    setState(() {
+      _polylinePoints = directionsResponse.routes.first.geometry
+          .map((point) => LatLng(point.latitude, point.longitude))
+          .toList();
+    });
+  }
 
 void dropOffPassenger(Passenger p){
   setState(() {
@@ -214,8 +248,7 @@ List<LatLng> sortLocations(List<LatLng> locations){
   @override
   Widget build(BuildContext context) {
 
-    List<LatLng> orderOfPickUp=sortLocations(widget.passengerLocations);
-    List<LatLng> orderOfDropOff=sortLocations(widget.passengerDestinations);
+    
     
 
 
