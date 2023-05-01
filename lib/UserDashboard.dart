@@ -61,7 +61,7 @@ double longitude = position.longitude;
    
   @override
   Widget build(BuildContext context) {
-    List<Journey> journeyList = [      Journey(journeyId: 'J001', pickupLocation: 'New York', dropoffLocation: 'Los Angeles', cost: 250.0),      Journey(journeyId: 'J002', pickupLocation: 'San Francisco', dropoffLocation: 'Las Vegas', cost: 180.0),      Journey(journeyId: 'J003', pickupLocation: 'Chicago', dropoffLocation: 'Miami', cost: 350.0),    ];
+    List<Journey> journeyList = [     Journey(journeyId: 'J001', pickupLocation: 'Powai', dropoffLocation: 'Andheri', cost: 250.0),      Journey(journeyId: 'J002', pickupLocation: 'Andheri', dropoffLocation: 'Bandra', cost: 180.0),      Journey(journeyId: 'J003', pickupLocation: 'Bandra', dropoffLocation: 'Vikhroli', cost: 350.0),    ];
 
     return Scaffold(
       appBar: AppBar(

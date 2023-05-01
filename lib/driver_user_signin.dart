@@ -103,10 +103,24 @@ class _UserSignInScreenState extends State<UserSignInScreen> {
   late String _username;
   late String _password;
 
-  void _submit() {
+  void _submit() async{
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       // perform login logic for driver
+       try {
+  final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+    email: _username,
+    password: _password,
+  );
+} on FirebaseAuthException catch (e) {
+  if (e.code == 'weak-password') {
+    print('The password provided is too weak.');
+  } else if (e.code == 'email-already-in-use') {
+    print('The account already exists for that email.');
+  }
+} catch (e) {
+  print(e);
+}
     }
   }
 

@@ -7,6 +7,33 @@ import 'dart:math' ;
 import 'dart:async';
 import 'JourneySuccess.dart';
 
+//const fire = require("firebase");
+// function postJourney(driverId, passengerId, pickupLocation, dropoffLocation, earning) {
+//   // Generate a random journey ID
+//   const journeyId = Math.floor(Math.random() * 1000000).toString();
+
+//   // Create a reference to the "journeys" node in the database
+//   const journeysRef = firebase.database().ref('journeys');
+
+//   // Create a new journey object with the provided information
+//   const newJourney = {
+//     journeyId,
+//     driverId,
+//     passengerId,
+//     pickupLocation,
+//     dropoffLocation,
+//     earning
+//   };
+
+//   // Push the new journey object to the "journeys" node
+//   journeysRef.push(newJourney)
+//     .then(() => {
+//       console.log(`Journey ${journeyId} posted successfully`);
+//     })
+//     .catch((error) => {
+//       console.error(`Error posting journey: ${error}`);
+//     });
+// }
 class Passenger{
   late LatLng passengerFrom;
   late LatLng passengerTo;

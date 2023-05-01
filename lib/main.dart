@@ -4,24 +4,31 @@ import 'MapScreen.dart';
 import 'LocationPicker.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-Future<void> main() async {
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  final initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
-  
-  final initializationSettings = InitializationSettings(
-    android: initializationSettingsAndroid,
-  
-  );
-
-  await Firebase.initializeApp(  );
-
-
-  await FlutterLocalNotificationsPlugin().initialize(initializationSettings);
-  
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
   runApp(MyApp());
 }
+// Future<void> main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+
+//   final initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
+  
+//   final initializationSettings = InitializationSettings(
+//     android: initializationSettingsAndroid,
+  
+//   );
+
+//   await Firebase.initializeApp(  );
+
+
+//   await FlutterLocalNotificationsPlugin().initialize(initializationSettings);
+  
+//   runApp(MyApp());
+// }
 
 
 
