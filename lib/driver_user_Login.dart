@@ -18,12 +18,35 @@ class _DriverLoginScreenState extends State<DriverLoginScreen> {
       _formKey.currentState!.save();
       // perform login logic for driver
       
-      if(_username == 'Myname' && _password == "1234"){
-           Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => DriverDashboardPage()),
-    );
+      try {
+      // authenticate the user with Firebase Authentication
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _username,
+        password: _password,
+      );
+
+      // navigate to the appropriate dashboard page based on the user type
+      if (userCredential.user != null) {
+  
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => DriverDashboardPage()),
+          );
       }
+    } on FirebaseAuthException catch (e) {
+      // handle authentication errors
+      if (e.code == 'user-not-found') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('No user found for that email.')),
+        );
+      } else if (e.code == 'wrong-password') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Wrong password provided for that user.')),
+        );
+      }
+    } catch (e) {
+      print(e);
+    }
     }
   }
 
@@ -114,17 +137,12 @@ class _UserLoginScreenState extends State<UserLoginScreen> {
 
       // navigate to the appropriate dashboard page based on the user type
       if (userCredential.user != null) {
-        if (_username == 'driver@example.com') {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => DriverDashboardPage()),
-          );
-        } else {
+       
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => UserDashboardPage()),
           );
-        }
+        
       }
     } on FirebaseAuthException catch (e) {
       // handle authentication errors
