@@ -16,7 +16,7 @@ class _DriverSignInScreenState extends State<DriverSignInScreen> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       // perform login logic for driver
-    }
+    
 
     try {
   final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -32,6 +32,8 @@ class _DriverSignInScreenState extends State<DriverSignInScreen> {
 } catch (e) {
   print(e);
 }
+
+  }
 
   }
 
@@ -114,9 +116,21 @@ class _UserSignInScreenState extends State<UserSignInScreen> {
   );
 } on FirebaseAuthException catch (e) {
   if (e.code == 'weak-password') {
+     ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('The password provided is too weak.')),
+        );
     print('The password provided is too weak.');
   } else if (e.code == 'email-already-in-use') {
+    ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('The account already exists for that email.')),
+        );
     print('The account already exists for that email.');
+  }
+  else{
+     ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.code)),
+        );
+    print(e);
   }
 } catch (e) {
   print(e);
