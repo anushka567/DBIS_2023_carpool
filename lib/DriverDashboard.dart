@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:geolocator/geolocator.dart';
 import 'PassengerPicker.dart';
 import 'Login.dart';
+import 'FindPassengers.dart';
 class Journey {
   final String journeyId;
   final String pickupLocation;
@@ -119,8 +120,13 @@ cells: [
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _navigateToPassengerPicker(context);
-        },
+          // _navigateToPassengerPicker(context);
+          Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => PassengerPicker(initialLatitude:19.1305440,initialLongitude:72.9154179)
+   ),
+    );
+         },
          child: const Icon(Icons.car_rental),
       ),
     );
