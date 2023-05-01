@@ -13,7 +13,7 @@ class _DriverLoginScreenState extends State<DriverLoginScreen> {
   late String _username;
   late String _password;
 
-  void _submit() {
+  void _submit() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       // perform login logic for driver
@@ -118,7 +118,7 @@ class _UserLoginScreenState extends State<UserLoginScreen> {
   late String _username;
   late String _password;
 
-  void _submit(context) {
+  void _submit(context) async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
