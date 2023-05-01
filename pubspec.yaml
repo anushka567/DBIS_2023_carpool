@@ -42,8 +42,11 @@ dependencies:
   geolocator: ^9.0.2
   flutter_local_notifications: ^14.0.0
   riverpod: ^2.3.6
-  
+  firebase_auth: ^4.2.2
 
+dependency_overrides:
+  intl: ^0.18.0
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
