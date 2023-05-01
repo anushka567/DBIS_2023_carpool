@@ -16,6 +16,8 @@ class PassengerPicker extends StatefulWidget {
 
   @override
   State<PassengerPicker> createState() => _PassengerPickerState();
+  // fetchNearestWaitingPassengers(FirebaseAuth.instance.currentUser.loc, FirebaseAuth.instance.currentUser)
+  // changeUserStatus(FirebaseAuth.instance.currentUser, "init", "waiting") Commented for demo
 }
 
 class _PassengerPickerState extends State<PassengerPicker> {
@@ -35,6 +37,7 @@ class _PassengerPickerState extends State<PassengerPicker> {
 
 
   void startJourney(BuildContext context){
+    // postJourneyDetails(_driverId, _userId, _pickupLat, _pickupLng, _dropoffLat, _dropoffLng) 
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) =>  DriveFromTo(driverLat: widget.initialLatitude,driverLong: widget.initialLongitude,

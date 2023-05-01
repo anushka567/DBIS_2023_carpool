@@ -65,6 +65,7 @@ double longitude = position.longitude;
   Widget build(BuildContext context) {
     List<Journey> journeyList = [      Journey(journeyId: 'J001', pickupLocation: 'Powai', dropoffLocation: 'Andheri', cost: 250.0),      Journey(journeyId: 'J002', pickupLocation: 'Andheri', dropoffLocation: 'Bandra', cost: 180.0),      Journey(journeyId: 'J003', pickupLocation: 'Bandra', dropoffLocation: 'Vikhroli', cost: 350.0),    ];
     print(FirebaseAuth.instance.currentUser);
+    // fetchTopJourneys(FirebaseAuth.instance.currentUser); Commented for demo
     return Scaffold(
       appBar: AppBar(
         title: Text('Welcome Driver!'),

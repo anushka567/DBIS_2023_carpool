@@ -13,6 +13,7 @@ class LocationPicker extends StatefulWidget {
 
   @override
   State<LocationPicker> createState() => _LocationPickerState();
+  // changeUserStatus(FirebaseAuth.instance.currentUser,"init", "waiting") //Commented for demo
 }
 
 class _LocationPickerState extends State<LocationPicker> {
