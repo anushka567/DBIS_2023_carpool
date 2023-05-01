@@ -5,7 +5,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'dart:math' ;
 import 'dart:async';
-
+import 'JourneySuccess.dart';
 
 class Passenger{
   late LatLng passengerFrom;
@@ -58,6 +58,10 @@ class DriveFromTo extends StatefulWidget {
 
 class _DriveFromToState extends State<DriveFromTo> {
 late List<Passenger> passengerList;
+late int pickup_index=0;
+late int dropoff_index=0;
+late List<LatLng> orderOfPickUp;
+late List<LatLng> orderOfDropOff;
 late List<PassengerMarker> markerList;
 late FlutterMap flutterMap;
 Timer? _timer;
@@ -69,6 +73,8 @@ void initState(){
   //   Passenger p=new Passenger(widget.passengerLocations[i], widget.passengerDestinations[i]);
   //   passengerList.add(p);
   // }
+   orderOfPickUp=sortLocations(widget.passengerLocations);
+    orderOfDropOff=sortLocations(widget.passengerDestinations);
   passengerList = [];
     markerList = [];
     for (int i = 0; i < widget.passengerDestinations.length; i++) {
@@ -79,7 +85,7 @@ void initState(){
       passengerList.add(p);
     }
  addMarkers();
-
+//Future.delayed(Duration(seconds: 3), addMarkers);
  flutterMap = FlutterMap(
         options: MapOptions(
             center: LatLng(widget.driverLat, widget.driverLong), zoom: 14),
@@ -106,16 +112,16 @@ void initState(){
           )
         ]);
 
-  Timer.periodic(const Duration(milliseconds: 500), (timer) { 
-    setState(() {
-      widget.driverLat-=0.001;
-      widget.driverLong-=0.001;
-      addMarkers();
+  // Timer.periodic(const Duration(milliseconds: 500), (timer) { 
+  //   setState(() {
+  //     widget.driverLat-=0.001;
+  //     widget.driverLong-=0.001;
+  //     addMarkers();
 
-    });
-  });
+  //   });
+  // });
   
-  Timer.periodic(const Duration(seconds: 5), (timer) {
+  Timer.periodic(const Duration(seconds: 3), (timer) {
       
     setState(() {
       addMarkers();
@@ -147,11 +153,55 @@ void pickUpPassenger(Passenger p){
 
 
 //we need to display the marker for those for which driverReached = false. or destinationreached =true;
+
 void addMarkers(){
+  //if(!orderOfPickup.emptY()){
+  //  widget.driverLat = orderOFPickup[0].lat;
+   //   widget.driverLong = orderOFPickup[0].long;
+  //}
+  // {
+  //for i in Passengerlist
+  //if lat_long = driver_lat_long:
+  //  p.driverReached = true;
+  // }
+  //{else:
+  //widget.driverLat = orderOFDropoff[0].lat;
+   //   widget.driverLong = orderOFDropoff[0].long;
+   // for i in Passengerlist
+  //if lat_long = driver_lat_long:
+  //  p.reachedDestination= true;
+  // }}
+  if(pickup_index<orderOfPickUp.length){
+    widget.driverLat = orderOfPickUp[pickup_index].latitude;
+    widget.driverLong = orderOfPickUp[pickup_index].longitude;
+    for(Passenger p in passengerList){
+      if(p.passengerFrom.latitude==widget.driverLat&&p.passengerFrom.longitude==widget.driverLong){
+        p.driverReached = true;
+      }
+    }
+    pickup_index+=1;
+  }
+  else if(pickup_index==orderOfPickUp.length&&dropoff_index<orderOfDropOff.length){
+    widget.driverLat = orderOfDropOff[dropoff_index].latitude;
+    widget.driverLong = orderOfDropOff[dropoff_index].longitude;
+    for(Passenger p in passengerList){
+      if(p.passengerTo.latitude==widget.driverLat&&p.passengerTo.longitude==widget.driverLong){
+        p.reachedDestination = true;
+      }
+    }
+    dropoff_index+=1;
+  }
+  else if (pickup_index==orderOfPickUp.length&&dropoff_index==orderOfDropOff.length){
+    Navigator.pushReplacement(context, MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          JourneySuccess(),
+                    ));
+  }
+    
   markerList = [];
   markerList.add(PassengerMarker(LatLng(widget.driverLat,widget.driverLong),Colors.blue));
   for (Passenger p in passengerList) {
-    if (p.reachedDestination == false) {
+    if (!(p.reachedDestination == false&&p.driverReached==true)) {
       markerList.add(p.marker);
     }
   }
@@ -214,8 +264,7 @@ List<LatLng> sortLocations(List<LatLng> locations){
   @override
   Widget build(BuildContext context) {
 
-    List<LatLng> orderOfPickUp=sortLocations(widget.passengerLocations);
-    List<LatLng> orderOfDropOff=sortLocations(widget.passengerDestinations);
+   
     
 
 
