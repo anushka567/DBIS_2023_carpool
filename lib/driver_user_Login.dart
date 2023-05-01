@@ -98,15 +98,52 @@ class _UserLoginScreenState extends State<UserLoginScreen> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      if(_username == 'Myname' && _password == "1234"){
-           Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => UserDashboardPage()),
-    );
+    //   `if(_username == 'Myname' && _password == "1234"){
+    //        Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => UserDashboardPage()),
+    // );
+    //   }`
+    try {
+      // authenticate the user with Firebase Authentication
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _username,
+        password: _password,
+      );
+
+      // navigate to the appropriate dashboard page based on the user type
+      if (userCredential.user != null) {
+        if (_username == 'driver@example.com') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => DriverDashboardPage()),
+          );
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => UserDashboardPage()),
+          );
+        }
       }
-      // perform login logic for driver
+    } on FirebaseAuthException catch (e) {
+      // handle authentication errors
+      if (e.code == 'user-not-found') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('No user found for that email.')),
+        );
+      } else if (e.code == 'wrong-password') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Wrong password provided for that user.')),
+        );
+      }
+    } catch (e) {
+      print(e);
     }
   }
+
+  
+      // perform login logic for driver
+    }
 
  @override
   Widget build(BuildContext context) {
